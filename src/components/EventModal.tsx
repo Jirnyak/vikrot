@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { CHARACTERS } from '../gameData';
 import type { GameEvent } from '../gameData';
 import { CharacterPortrait } from './CharacterPortrait';
+import { getEventImageUrl } from '../utils/assetLoader';
 
 interface Props {
   event: GameEvent;
@@ -10,24 +11,51 @@ interface Props {
 
 export const EventModal: React.FC<Props> = ({ event, onChoice }) => {
   const char = event.characterId ? CHARACTERS.find(c => c.id === event.characterId) : null;
+  const [eventImgFailed, setEventImgFailed] = useState(false);
+
+  const eventImgUrl = getEventImageUrl(event.id);
 
   return (
     <div className="fixed inset-0 bg-black/85 flex items-center justify-center z-50 p-4">
-      <div className="bg-gray-900 border-2 border-cyan-600 rounded-xl p-5 max-w-md w-full shadow-2xl shadow-cyan-900/30"
+      <div className="bg-gray-900 border-2 border-cyan-600 rounded-xl p-5 max-w-md w-full shadow-2xl shadow-cyan-900/30 max-h-[90vh] overflow-y-auto"
         style={char ? { borderColor: `${char.color}99` } : {}}
       >
         <div className="text-center mb-4">
-          {char ? (
-            <div className="flex flex-col items-center gap-2 mb-2">
-              <CharacterPortrait emoji={char.portrait} color={char.color} name={char.name} size="xl" />
-              <div className="text-[10px] px-2 py-0.5 rounded-full border border-gray-600 text-gray-400"
-                style={{ borderColor: `${char.color}66`, color: char.color }}>
-                {char.name}
-              </div>
+          {/* Event image — try loading PNG by event id */}
+          {!eventImgFailed && (
+            <div className="mb-3 rounded-lg overflow-hidden bg-gray-800/50 border border-gray-700">
+              <img
+                src={eventImgUrl}
+                alt={event.title}
+                className="w-full h-40 object-cover"
+                onError={() => setEventImgFailed(true)}
+              />
             </div>
-          ) : (
-            <div className="text-5xl mb-2 p-3 inline-block rounded-full bg-gray-800/50">{event.emoji}</div>
           )}
+
+          {/* Character portrait or emoji fallback (only shown if no event image) */}
+          {eventImgFailed && (
+            <>
+              {char ? (
+                <div className="flex flex-col items-center gap-2 mb-2">
+                  <CharacterPortrait
+                    emoji={char.portrait}
+                    color={char.color}
+                    name={char.name}
+                    size="xl"
+                    characterId={char.id}
+                  />
+                  <div className="text-[10px] px-2 py-0.5 rounded-full border border-gray-600 text-gray-400"
+                    style={{ borderColor: `${char.color}66`, color: char.color }}>
+                    {char.name}
+                  </div>
+                </div>
+              ) : (
+                <div className="text-5xl mb-2 p-3 inline-block rounded-full bg-gray-800/50">{event.emoji}</div>
+              )}
+            </>
+          )}
+
           <h2 className="text-lg font-bold text-cyan-300" style={char ? { color: char.color } : {}}>{event.title}</h2>
           <p className="text-sm text-gray-400 mt-2 leading-relaxed">{event.desc}</p>
         </div>

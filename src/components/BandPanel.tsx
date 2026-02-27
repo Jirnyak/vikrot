@@ -27,13 +27,12 @@ function getFitLabel(fit: 'natural' | 'ok' | 'mismatch') {
 export const BandPanel: React.FC<Props> = ({ state, onUpdateBand }) => {
   const [addingChar, setAddingChar] = useState<string | null>(null);
   const [selectedRole, setSelectedRole] = useState<string>('');
-  const [changingRole, setChangingRole] = useState<string | null>(null); // characterId of member changing role
+  const [changingRole, setChangingRole] = useState<string | null>(null);
 
   const currentMembers = state.bandMembers;
   const memberIds = currentMembers.map(m => m.characterId);
   const availableChars = CHARACTERS.filter(c => !memberIds.includes(c.id));
 
-  // Roles already filled
   const filledRoles = currentMembers.map(m => m.role);
 
   const handleKick = (charId: string) => {
@@ -79,9 +78,9 @@ export const BandPanel: React.FC<Props> = ({ state, onUpdateBand }) => {
             <div key={m.characterId} className="rounded-lg p-2.5 border"
               style={{ borderColor: `${char.color}44`, background: `${char.color}08` }}>
               <div className="flex items-center gap-2">
-                <CharacterPortrait emoji={char.portrait} color={char.color} name={char.name} size="sm" />
+                <CharacterPortrait emoji={char.portrait} color={char.color} name={char.name} size="sm" characterId={char.id} />
                 <div className="flex-1 min-w-0">
-                  <div className="text-xs font-bold flex items-center gap-2">
+                  <div className="text-xs font-bold flex items-center gap-2 flex-wrap">
                     <span style={{ color: char.color }}>{char.name}</span>
                     <span className="text-gray-500">—</span>
                     <span className="text-white">{role?.emoji} {role?.name || m.role}</span>
@@ -187,12 +186,12 @@ export const BandPanel: React.FC<Props> = ({ state, onUpdateBand }) => {
               <button
                 key={c.id}
                 onClick={() => { setAddingChar(c.id === addingChar ? null : c.id); setSelectedRole(''); }}
-                className={`flex items-center gap-1 text-[10px] px-2 py-1.5 rounded border cursor-pointer transition-all ${
+                className={`flex items-center gap-1.5 text-[10px] px-2 py-1.5 rounded border cursor-pointer transition-all ${
                   addingChar === c.id ? 'border-amber-500 bg-amber-900/30' : 'border-gray-600 hover:border-amber-600'
                 }`}
                 style={addingChar === c.id ? { borderColor: c.color, background: `${c.color}22` } : {}}
               >
-                <span>{c.portrait}</span>
+                <CharacterPortrait emoji={c.portrait} color={c.color} name={c.name} size="sm" characterId={c.id} />
                 <span className="text-gray-300">{c.name}</span>
                 <span className={`text-[8px] ${rel > 0 ? 'text-green-400' : rel < 0 ? 'text-red-400' : 'text-gray-500'}`}>
                   ({rel > 0 ? '+' : ''}{rel})
@@ -211,7 +210,7 @@ export const BandPanel: React.FC<Props> = ({ state, onUpdateBand }) => {
           return (
             <div className="mt-2 p-2.5 rounded-lg border border-gray-600 bg-gray-800/50">
               <div className="flex items-center gap-2 mb-2">
-                <CharacterPortrait emoji={char.portrait} color={char.color} name={char.name} size="sm" />
+                <CharacterPortrait emoji={char.portrait} color={char.color} name={char.name} size="md" characterId={char.id} />
                 <div>
                   <div className="text-xs font-bold" style={{ color: char.color }}>{char.name}</div>
                   <div className="text-[9px] text-gray-500">{char.desc}</div>
@@ -289,19 +288,17 @@ export const BandPanel: React.FC<Props> = ({ state, onUpdateBand }) => {
             const filled = currentMembers.find(m => m.role === r.id);
             const filledChar = filled ? CHARACTERS.find(c => c.id === filled.characterId) : null;
             return (
-              <div key={r.id} className={`text-[9px] p-1 rounded border ${
+              <div key={r.id} className={`text-[9px] p-1.5 rounded border flex items-center gap-1 ${
                 filled ? 'border-gray-600 bg-gray-800/50' : 'border-gray-800 bg-gray-900/30 opacity-50'
               }`}>
-                <div className="flex items-center gap-1">
-                  <span>{r.emoji}</span>
-                  <span className="text-gray-300">{r.name}</span>
-                  {filledChar && (
-                    <span className="ml-auto" style={{ color: filledChar.color }}>
-                      {filledChar.portrait} {filledChar.name.split(' ')[0]}
-                    </span>
-                  )}
-                  {!filled && <span className="ml-auto text-gray-600">пусто</span>}
-                </div>
+                <span>{r.emoji}</span>
+                <span className="text-gray-300">{r.name}</span>
+                {filledChar && (
+                  <span className="ml-auto flex items-center gap-0.5" style={{ color: filledChar.color }}>
+                    <CharacterPortrait emoji={filledChar.portrait} color={filledChar.color} name={filledChar.name} size="sm" characterId={filledChar.id} />
+                  </span>
+                )}
+                {!filled && <span className="ml-auto text-gray-600">пусто</span>}
               </div>
             );
           })}

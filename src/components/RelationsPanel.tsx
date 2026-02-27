@@ -28,7 +28,7 @@ export const RelationsPanel: React.FC<Props> = ({ state }) => {
       <h3 className="text-sm font-bold text-pink-400 mb-2">💬 Отношения</h3>
       {sorted.map(c => (
         <div key={c.id} className="flex items-center gap-2 text-xs bg-gray-800/50 rounded-lg p-1.5">
-          <CharacterPortrait emoji={c.portrait} color={c.color} name={c.name} size="sm" />
+          <CharacterPortrait emoji={c.portrait} color={c.color} name={c.name} size="sm" characterId={c.id} />
           <span className={`w-28 truncate ${c.inBand ? 'font-bold' : 'text-gray-300'}`} style={c.inBand ? { color: c.color } : {}}>
             {c.name} {c.inBand ? '🎸' : ''}
           </span>

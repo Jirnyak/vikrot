@@ -53,7 +53,7 @@ export const CharacterPanel: React.FC<Props> = ({ state, onSelectCharacter, onIn
                   : 'border-gray-700 bg-gray-800/50 hover:border-gray-500 hover:bg-gray-800'
               }`}
             >
-              <CharacterPortrait emoji={c.portrait} color={c.color} name={c.name} size="sm" />
+              <CharacterPortrait emoji={c.portrait} color={c.color} name={c.name} size="sm" characterId={c.id} />
               <span className="text-[10px] font-medium text-gray-300 mt-1 truncate w-full text-center">{c.name}</span>
               <span className="text-[9px]">{getRelEmoji(rel)} {rel > 0 ? '+' : ''}{rel}</span>
               {inBand && <span className="text-[8px] text-amber-400">🎸</span>}
@@ -73,7 +73,13 @@ export const CharacterPanel: React.FC<Props> = ({ state, onSelectCharacter, onIn
         >
           {/* Header */}
           <div className="flex items-start gap-3">
-            <CharacterPortrait emoji={selectedChar.portrait} color={selectedChar.color} name={selectedChar.name} size="lg" />
+            <CharacterPortrait
+              emoji={selectedChar.portrait}
+              color={selectedChar.color}
+              name={selectedChar.name}
+              size="lg"
+              characterId={selectedChar.id}
+            />
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2">
                 <h4 className="text-lg font-bold" style={{ color: selectedChar.color }}>{selectedChar.name}</h4>

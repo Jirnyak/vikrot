@@ -245,7 +245,7 @@ export default function App() {
     return (
       <div className="min-h-screen bg-gray-950 text-white flex items-center justify-center p-4">
         <div className="max-w-lg text-center space-y-4">
-          <CharacterPortrait emoji="🎹" color="#06b6d4" name="Виктор" size="xl" isViktor className="mx-auto" />
+          <CharacterPortrait emoji="🎹" color="#06b6d4" name="Виктор" size="xl" isViktor className="mx-auto" characterId="viktor" />
           <h1 className="text-3xl font-bold bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
             Виктор Аргонов
           </h1>
@@ -255,7 +255,7 @@ export default function App() {
           <div className="flex justify-center gap-1 flex-wrap">
             {CHARACTERS.map(c => (
               <div key={c.id} className="flex flex-col items-center" title={c.name}>
-                <CharacterPortrait emoji={c.portrait} color={c.color} name={c.name} size="sm" />
+                <CharacterPortrait emoji={c.portrait} color={c.color} name={c.name} size="sm" characterId={c.id} />
                 <span className="text-[8px] text-gray-500 mt-0.5">{c.name.split(' ')[0]}</span>
               </div>
             ))}
@@ -333,7 +333,7 @@ export default function App() {
       <header className="bg-gray-900/80 border-b border-gray-800 p-2.5">
         <div className="max-w-4xl mx-auto flex items-center justify-between gap-3">
           <div className="flex items-center gap-2">
-            <CharacterPortrait emoji="🎹" color="#06b6d4" name="Виктор" size="md" isViktor />
+            <CharacterPortrait emoji="🎹" color="#06b6d4" name="Виктор" size="md" isViktor characterId="viktor" />
             <div>
               <h1 className="text-sm font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
                 Виктор Аргонов
