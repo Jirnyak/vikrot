@@ -1,17 +1,12 @@
 # Ассеты для игры «Виктор Аргонов: Симулятор»
 
-## Как добавить портрет персонажа
-
-1. Положите файл `.png` в папку `public/assets/portraits/`
-2. Назовите файл по `id` персонажа из `gameData.ts`
-
-### Имена файлов для текущих персонажей:
+## Портреты персонажей → `portraits/`
 
 | Файл | Персонаж |
 |------|----------|
-| `viktor.png` | Виктор Аргонов (главный герой) |
+| `viktor.png` | Виктор Аргонов (ГГ) |
 | `ariel.png` | Ариэль (солистка) |
-| `olivia.png` | Оливия Кибер (солистка-киборг) |
+| `olivia.png` | Оливия Кибер (киборг) |
 | `mitrofanov.png` | Митрофанов (баритон) |
 | `mukhin.png` | Валерий Мухин (менеджер) |
 | `dantesik.png` | Дантесик (тусовщик) |
@@ -23,45 +18,112 @@
 | `hacker_bob.png` | Боб-хакер (даркнет) |
 | `sasha.png` | Саша (веган-ударник) |
 
-**Размер рекомендуется:** 256×256 px или больше, квадратное, PNG с прозрачным фоном.
+**Размер:** 256×256+ px, квадрат, PNG с прозрачным фоном.
 
-## Как добавить картинку для события
+## Картинки событий → `events/`
 
-1. Положите файл `.png` в папку `public/assets/events/`
-2. Назовите файл по `id` события из `gameData.ts`
-
-### Имена файлов для текущих событий:
-
+### Случайные
 | Файл | Событие |
 |------|---------|
 | `troll_attack.png` | Набег троллей |
 | `donor_appears.png` | Щедрый донатер |
-| `ariel_drama.png` | Ариэль: Драма |
-| `olivia_glitch.png` | Оливия: Сбой системы |
-| `mitrofanov_drunk.png` | Митрофанов: Опять коньяк |
-| `mukhin_offer.png` | Мухин: Деловое предложение |
-| `dantesik_trouble.png` | Дантесик: Проблемы с законом |
-| `tomilov_idea.png` | Томилов: Безумная идея |
-| `volaliel_prophecy.png` | Волалиэль: Пророчество |
-| `sasha_intervention.png` | Саша: Интервенция |
-| `dvfu_invite.png` | Приглашение из ДВФУ |
-| `drug_bust.png` | Проверка полиции |
+| `dvfu_invite.png` | ДВФУ |
+| `drug_bust.png` | Полиция |
 | `viral_post.png` | Вирусный пост |
-| `concert_offer.png` | Предложение концерта |
-| `rain_vladivostok.png` | Тайфун во Владивостоке |
-| `inspiration_strike.png` | Вдохновение! |
+| `concert_offer.png` | Концерт |
+| `rain_vladivostok.png` | Тайфун |
+| `inspiration_strike.png` | Вдохновение |
 | `chinese_tourists.png` | Китайские туристы |
-| `zheka_startup.png` | Жека: Стартап-идея |
+
+### Цепочки
+| Файл | Событие |
+|------|---------|
+| `troll_retaliation.png` | Тролли мстят |
+| `scammed_donor_revenge.png` | Обманутый донатер |
+| `police_raid.png` | Обыск |
+| `mega_concert.png` | Мега-концерт |
+| `zheka_startup_result.png` | Результат стартапа |
+| `bob_analyzed_result.png` | Результаты анализа |
+
+### Персонажные
+| Файл | Событие |
+|------|---------|
+| `ariel_drama.png` | Ариэль: Драма |
+| `ariel_quits.png` | Ариэль уходит |
+| `ariel_return.png` | Ариэль возвращается |
+| `ariel_conflict_removed.png` | Конфликт с Ариэль |
+| `olivia_glitch.png` | Оливия: Сбой |
+| `olivia_upgrade_event.png` | Оливия: Апгрейд |
+| `mitrofanov_drunk.png` | Митрофанов пьяный |
+| `mitrofanov_vs_olivia.png` | Митрофанов vs Оливия |
+| `mukhin_offer.png` | Мухин: Заказ |
+| `dantesik_trouble.png` | Дантесик: Закон |
+| `dantesik_big_concert.png` | Дантесик: Мега-концерт |
+| `tomilov_idea.png` | Томилов: Идея |
+| `tomilov_novel_movie.png` | Томилов: Экранизация |
+| `volaliel_prophecy_event.png` | Волалиэль: Пророчество |
+| `volaliel_dimension_rift.png` | Волалиэль: Разрыв реальности |
+| `sasha_intervention.png` | Саша: Интервенция |
+| `sasha_marathon.png` | Саша: Марафон |
+| `zheka_startup.png` | Жека: Стартап |
 | `bob_darkweb.png` | Боб: Тёмное предложение |
-| `marina_article.png` | Марина: Статья о тебе |
+| `marina_article.png` | Марина: Статья |
 
-**Размер рекомендуется:** 400×300 px или больше, PNG/JPG.
+### Опера
+| Файл | Событие |
+|------|---------|
+| `opera1_premiere.png` | Премьера: 2032 |
+| `opera2_crisis.png` | Кризис Пепла и воды |
+| `opera3_eureka.png` | Прорыв: Синтетическая душа |
 
-## Принцип работы
+### Наркотики
+| Файл | Событие |
+|------|---------|
+| `addiction_crisis.png` | Ломка |
+| `meph_aftermath.png` | После мефедрона |
+| `alpha_nightmare.png` | Альфа-ПВП: На грани |
+| `clean_streak.png` | Чистая полоса |
 
-Игра автоматически проверяет наличие файла:
-- Если `portraits/{id}.png` существует → показывает картинку вместо эмодзи
-- Если файла нет → показывает стандартный эмодзи-аватар
-- Для событий аналогично: `events/{id}.png`
+**Размер:** 400×300+ px, PNG/JPG.
 
-**Просто кидай PNG в нужную папку — и оно появится в игре!**
+## Как это работает
+
+Игра автоматически ищет файл:
+- `portraits/{id}.png` → показывает вместо эмодзи
+- `events/{id}.png` → показывает вверху карточки события
+- Если файла нет → эмодзи-фоллбэк
+
+**Просто кинь PNG — и оно в игре!**
+
+## Как добавить новый контент
+
+1. **Новый персонаж** → добавь в `CHARACTERS[]` в `gameData.ts`, кинь `{id}.png` в `portraits/`
+2. **Новое событие** → добавь в `EVENTS[]`, кинь `{id}.png` в `events/`
+3. **Новый наркотик** → добавь в `SUBSTANCES[]`
+4. **Новая активность** → добавь в `ACTIVITIES[]`
+5. **Новая опера** → добавь в `OPERAS[]`
+
+### Условия событий (EventCondition)
+```
+flags: ['flag1']           — флаг должен быть SET
+noFlags: ['flag2']         — флаг НЕ должен быть SET
+inBand: ['ariel']          — персонаж в группе
+notInBand: ['ariel']       — персонаж НЕ в группе
+minRelation: { ariel: 30 } — отношения >= 30
+maxRelation: { ariel: -10 }— отношения <= -10
+minDay: 5                  — минимальный день
+minMoney: 10000            — минимум денег
+minPopularity: 50          — минимум популярности
+operaIndex: 1              — текущая опера
+minOperaProgress: 50       — прогресс оперы
+hasAddiction: ['mephedrone']— зависимость от вещества
+totalDosesMin: 10          — всего доз принято
+```
+
+### Выборы (EventChoice) — мета-эффекты
+```
+setsFlags: ['flag1']       — установить флаг
+removesFlags: ['flag2']    — убрать флаг  
+triggersEventId: 'event2'  — запустить цепочку
+triggersDelay: 3           — через N дней
+```
