@@ -231,13 +231,18 @@ export function getRandomEvent(state: GameState): GameEvent | null {
   const pendingNow = state.pendingEvents.filter(pe => pe.firesOnDay <= state.day);
   if (pendingNow.length > 0) {
     const pe = pendingNow[0];
-    const event = EVENTS.find(e => e.id === pe.eventId);
-    if (event && checkCondition(event.condition, state) && !state.firedUniqueEvents.has(event.id)) {
-      return event;
+    if (pe.eventId) {
+      // Specific triggered event
+      const event = EVENTS.find(e => e.id === pe.eventId);
+      if (event && checkCondition(event.condition, state) && !state.firedUniqueEvents.has(event.id)) {
+        return event;
+      }
     }
   }
 
   // 2. Check chain events that have conditions met (even without pending trigger)
+  // This picks randomly among eligible chain events — so for zheka startup,
+  // either the win or fail version can fire based on conditions
   const chainEvents = EVENTS.filter(e =>
     e.isChainEvent &&
     !state.firedUniqueEvents.has(e.id) &&
@@ -247,7 +252,7 @@ export function getRandomEvent(state: GameState): GameEvent | null {
     return chainEvents[Math.floor(Math.random() * chainEvents.length)];
   }
 
-  // 3. Random pool (60% chance)
+  // 3. Random pool (50% chance of no event)
   if (Math.random() > 0.5) return null;
   const available = EVENTS.filter(e =>
     !e.isChainEvent &&

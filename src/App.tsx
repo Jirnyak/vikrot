@@ -17,6 +17,8 @@ import {
   calculateDonations,
   getBandBuffs,
   performInteraction,
+  serializeState,
+  deserializeState,
   type GameState,
   type BandMember,
 } from './gameState';
@@ -28,8 +30,9 @@ import { AudiencePanel } from './components/AudiencePanel';
 import { EventModal } from './components/EventModal';
 import { CharacterPanel } from './components/CharacterPanel';
 import { CharacterPortrait } from './components/CharacterPortrait';
+import { RelationsPanel } from './components/RelationsPanel';
 
-type Tab = 'actions' | 'people' | 'substances' | 'band' | 'audience' | 'log';
+type Tab = 'actions' | 'people' | 'relations' | 'substances' | 'band' | 'audience' | 'log';
 
 export default function App() {
   const [state, setState] = useState<GameState>(createInitialState());
@@ -184,6 +187,29 @@ export default function App() {
 
   const handleRestart = () => { setState(createInitialState()); setShowIntro(true); };
 
+  const handleSave = () => {
+    try {
+      const data = serializeState(state);
+      localStorage.setItem('viktor_argonov_save', JSON.stringify(data));
+      notify('💾 Игра сохранена!');
+    } catch {
+      notify('❌ Ошибка сохранения!');
+    }
+  };
+
+  const handleLoad = () => {
+    try {
+      const raw = localStorage.getItem('viktor_argonov_save');
+      if (!raw) { notify('❌ Нет сохранения!'); return; }
+      const data = deserializeState(JSON.parse(raw));
+      setState(data);
+      setShowIntro(false);
+      notify('📂 Игра загружена!');
+    } catch {
+      notify('❌ Ошибка загрузки!');
+    }
+  };
+
   const currentOpera = OPERAS[state.currentOperaIndex];
   const operaPct = currentOpera ? Math.min(100, (state.operaProgress / currentOpera.requiredProgress) * 100) : 100;
   const donations = calculateDonations(state);
@@ -219,12 +245,22 @@ export default function App() {
             <p>🔗 <strong>События:</strong> Цепочки, флаги, последствия. Выборы имеют значение!</p>
             <p>🎭 <strong>Аудитория:</strong> Шизы, хомяки, интеллектуалы... Всем не угодишь!</p>
           </div>
-          <button
-            onClick={() => setShowIntro(false)}
-            className="px-8 py-3 bg-gradient-to-r from-cyan-600 to-purple-600 rounded-xl font-bold text-lg hover:from-cyan-500 hover:to-purple-500 transition-all cursor-pointer shadow-lg shadow-purple-900/50"
-          >
-            🎮 Начать игру
-          </button>
+          <div className="flex flex-col gap-2">
+            <button
+              onClick={() => setShowIntro(false)}
+              className="px-8 py-3 bg-gradient-to-r from-cyan-600 to-purple-600 rounded-xl font-bold text-lg hover:from-cyan-500 hover:to-purple-500 transition-all cursor-pointer shadow-lg shadow-purple-900/50"
+            >
+              🎮 Начать игру
+            </button>
+            {localStorage.getItem('viktor_argonov_save') && (
+              <button
+                onClick={handleLoad}
+                className="px-6 py-2 bg-gray-800 border border-gray-600 rounded-xl text-sm hover:bg-gray-700 transition-all cursor-pointer text-gray-300"
+              >
+                📂 Загрузить сохранение
+              </button>
+            )}
+          </div>
         </div>
       </div>
     );
@@ -257,6 +293,7 @@ export default function App() {
   const tabs: { id: Tab; label: string; emoji: string }[] = [
     { id: 'actions', label: 'Действия', emoji: '🎯' },
     { id: 'people', label: 'Люди', emoji: '👥' },
+    { id: 'relations', label: 'Связи', emoji: '💬' },
     { id: 'substances', label: 'Вещества', emoji: '💊' },
     { id: 'band', label: 'Группа', emoji: '🎸' },
     { id: 'audience', label: 'Фанаты', emoji: '📊' },
@@ -398,6 +435,7 @@ export default function App() {
           <div className="flex-1 overflow-y-auto p-3">
             {tab === 'actions' && <ActivityPanel state={state} onActivity={handleActivity} />}
             {tab === 'people' && <CharacterPanel state={state} onSelectCharacter={handleSelectCharacter} onInteract={handleCharacterInteraction} />}
+            {tab === 'relations' && <RelationsPanel state={state} />}
             {tab === 'substances' && <SubstancePanel state={state} onTake={handleSubstance} />}
             {tab === 'band' && <BandPanel state={state} onUpdateBand={handleBandUpdate} />}
             {tab === 'audience' && <AudiencePanel state={state} />}
@@ -413,8 +451,15 @@ export default function App() {
         </div>
       )}
 
-      <footer className="bg-gray-900/50 border-t border-gray-800 p-1.5 text-center text-[9px] text-gray-600">
-        Виктор Аргонов v0.3 • Комплексные Числа • Владивосток 🌊 • Флагов: {activeFlags} • Событий: {state.firedUniqueEvents.size}
+      <footer className="bg-gray-900/50 border-t border-gray-800 p-1.5 flex items-center justify-between px-3">
+        <span className="text-[9px] text-gray-600">
+          v0.4 • Комплексные Числа • Владивосток 🌊 • 🏳️{activeFlags} • 📜{state.firedUniqueEvents.size}
+        </span>
+        <div className="flex gap-1.5">
+          <button onClick={handleSave} className="text-[10px] px-2 py-0.5 bg-gray-800 border border-gray-700 rounded hover:bg-gray-700 text-gray-400 cursor-pointer">💾</button>
+          <button onClick={handleLoad} className="text-[10px] px-2 py-0.5 bg-gray-800 border border-gray-700 rounded hover:bg-gray-700 text-gray-400 cursor-pointer">📂</button>
+          <button onClick={handleRestart} className="text-[10px] px-2 py-0.5 bg-gray-800 border border-red-800 rounded hover:bg-red-900/50 text-red-400 cursor-pointer">🔄</button>
+        </div>
       </footer>
     </div>
   );

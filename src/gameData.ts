@@ -607,7 +607,7 @@ export const EVENTS: GameEvent[] = [
   {
     id: 'ariel_conflict_removed', title: 'Конфликт с Ариэль', emoji: '😢👩‍🎤', category: 'character', characterId: 'ariel',
     desc: 'Ариэль узнала что ты убрал её из группы. Она в ярости и рыдает одновременно.',
-    condition: { notInBand: ['ariel'], minRelation: { ariel: -50 } },
+    condition: { notInBand: ['ariel'], minRelation: { ariel: -50 }, noFlags: ['ariel_left'] },
     unique: true,
     choices: [
       { text: 'Объяснить причины', effects: { energy: -10 }, relationEffects: { ariel: -10 }, message: '"Ты предатель!" — но немного успокоилась.' },
@@ -777,18 +777,29 @@ export const EVENTS: GameEvent[] = [
     id: 'zheka_startup', title: 'Жека: Стартап', emoji: '🚀', category: 'character', characterId: 'zheka',
     desc: 'Приложение "Uber для ноотропов". Нужны инвестиции.',
     choices: [
-      { text: 'Вложить 10,000₽', effects: { money: -10000 }, relationEffects: { zheka: 20 }, message: 'Обещает x10. Как обычно.', setsFlags: ['zheka_startup_invested'], triggersEventId: 'zheka_startup_result', triggersDelay: 5 },
+      { text: 'Вложить 10,000₽', effects: { money: -10000 }, relationEffects: { zheka: 20 }, message: 'Обещает x10. Как обычно.', setsFlags: ['zheka_startup_invested'], triggersDelay: 5 },
       { text: 'Отказать', effects: {}, relationEffects: { zheka: -10 }, message: 'Расстроился, но не обиделся.' },
       { text: 'Помочь кодом', effects: { energy: -15 }, relationEffects: { zheka: 15 }, audienceEffects: { biohackers: 2 }, message: 'Пару вечеров за кодом.' },
     ],
   },
   {
-    id: 'zheka_startup_result', title: 'Жека: Результат стартапа', emoji: '📈📉', category: 'chain', characterId: 'zheka',
-    desc: 'Стартап Жеки запустился! Результаты...',
+    id: 'zheka_startup_result_win', title: 'Жека: Стартап взлетел!', emoji: '📈', category: 'chain', characterId: 'zheka',
+    desc: 'Стартап Жеки запустился и... ЭТО РАБОТАЕТ! Пользователи валят толпами!',
     isChainEvent: true,
     condition: { flags: ['zheka_startup_invested'] },
     choices: [
-      { text: 'Проверить баланс', effects: { money: Math.random() > 0.5 ? 30000 : -5000 }, message: Math.random() > 0.5 ? 'ПРИБЫЛЬ! Стартап взлетел! +30000₽' : 'Стартап провалился... -5000₽ на серверах.', removesFlags: ['zheka_startup_invested'] },
+      { text: 'Забрать прибыль!', effects: { money: 30000, popularity: 3 }, relationEffects: { zheka: 15 }, message: 'ПРИБЫЛЬ! Стартап взлетел! +30000₽ Жека гений!', removesFlags: ['zheka_startup_invested'], setsFlags: ['zheka_startup_won'] },
+      { text: 'Реинвестировать', effects: { money: 5000 }, relationEffects: { zheka: 20 }, message: 'Вложили обратно. Жека обещает x100 через месяц.', removesFlags: ['zheka_startup_invested'], setsFlags: ['zheka_startup_reinvested'] },
+    ],
+  },
+  {
+    id: 'zheka_startup_result_fail', title: 'Жека: Стартап провалился...', emoji: '📉', category: 'chain', characterId: 'zheka',
+    desc: 'Стартап Жеки запустился и... сервера упали в первый день. Пользователей — ноль.',
+    isChainEvent: true,
+    condition: { flags: ['zheka_startup_invested'] },
+    choices: [
+      { text: 'Ну что ж...', effects: { money: -5000, sanity: -5 }, relationEffects: { zheka: -5 }, message: 'Стартап провалился... -5000₽ ушли на серверы. Жека извиняется.', removesFlags: ['zheka_startup_invested'] },
+      { text: 'Ты мне должен!', effects: { sanity: -3 }, relationEffects: { zheka: -20 }, message: 'Жека обиделся. Друзья так не поступают...', removesFlags: ['zheka_startup_invested'] },
     ],
   },
 
